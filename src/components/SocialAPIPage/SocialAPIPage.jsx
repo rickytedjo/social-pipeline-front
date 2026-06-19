@@ -1,7 +1,32 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function SocialAPIPage() {
+  const [resultText, setResultText] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleRequest() {
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/request-result');
+      const payload = await response.json();
+
+      if (!response.ok) {
+        setError(payload.error || 'Failed to fetch result.');
+      } else {
+        const value = payload.result ?? 'No result returned.';
+        setResultText(typeof value === 'string' ? value : JSON.stringify(value, null, 2));
+      }
+    } catch (fetchError) {
+      setError(fetchError instanceof Error ? fetchError.message : 'Unknown error.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div style={{ fontFamily: "'Sora', sans-serif", backgroundColor: '#f5f6fa' }} className="min-h-screen flex flex-col">
       {/* Navigation Bar */}
@@ -21,7 +46,7 @@ export default function SocialAPIPage() {
             letterSpacing: '-0.4px',
           }}
         >
-          Social API
+          Social Pipe
         </h1>
       </nav>
 
@@ -48,7 +73,7 @@ export default function SocialAPIPage() {
               marginBottom: '12px',
             }}
           >
-            Example Request
+            AI Insight
           </h2>
 
           <textarea
@@ -56,7 +81,7 @@ export default function SocialAPIPage() {
             disabled
             aria-readonly="true"
             tabIndex={-1}
-            value={"{\n  \"example\": \"This textarea is read-only and not interactable.\"\n}"}
+            value={resultText}
             style={{
               width: '100%',
               minHeight: '160px',
@@ -71,7 +96,13 @@ export default function SocialAPIPage() {
             }}
           />
 
+          {error ? (
+            <p style={{ color: '#dc2626', marginBottom: '12px' }}>{error}</p>
+          ) : null}
+
           <button
+            type="button"
+            onClick={handleRequest}
             style={{
               backgroundColor: '#2d3bde',
               color: '#ffffff',
@@ -82,11 +113,13 @@ export default function SocialAPIPage() {
               fontWeight: '600',
               cursor: 'pointer',
               transition: 'background 0.15s',
+              opacity: loading ? 0.7 : 1,
             }}
             onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#1f28a6')}
             onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#2d3bde')}
+            disabled={loading}
           >
-            Get Started
+            {loading ? 'Loading…' : 'Request'}
           </button>
         </div>
       </main>

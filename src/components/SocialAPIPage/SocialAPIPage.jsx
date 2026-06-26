@@ -40,7 +40,7 @@ export default function SocialAPIPage() {
       >
         <h1
           style={{
-            fontSize: '18px',
+            fontSize: '24px',
             fontWeight: '700',
             color: '#2d3bde',
             letterSpacing: '-0.4px',
@@ -60,7 +60,7 @@ export default function SocialAPIPage() {
             border: '1px solid #e5e7eb',
             boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
             padding: '32px',
-            maxWidth: '640px',
+            maxWidth: '920px',
             width: '100%',
           }}
           className="text-center"
@@ -84,7 +84,7 @@ export default function SocialAPIPage() {
             value={resultText}
             style={{
               width: '100%',
-              minHeight: '160px',
+              minHeight: '260px',
               resize: 'none',
               padding: '12px',
               borderRadius: '8px',
@@ -106,7 +106,9 @@ export default function SocialAPIPage() {
             style={{
               backgroundColor: '#2d3bde',
               color: '#ffffff',
-              padding: '10px 24px',
+              padding: '12px 18px',
+              width: '100%',
+              display: 'block',
               borderRadius: '8px',
               border: 'none',
               fontSize: '14px',
